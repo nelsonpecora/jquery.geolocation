@@ -2,6 +2,8 @@
 
 A really simple plugin to get country data from either HTML5 Geolocation or IP address, depending on the capability of the browser. Please feel free to fork and modify this code to get other levels of information (city, state/province, etc).
 
+Right now it's just saving the country name into a cookie (called 'mycountry'). This is dumb and I'm going to switch it over to using LocalStorage for supported browsers tonight.
+
 ## Configure It
 
 Basically, clone this repo or download the minified javascript and go to town. You'll need an [API Key](https://developers.google.com/maps/documentation/javascript/tutorial) to use Google Maps.
