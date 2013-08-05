@@ -13,9 +13,16 @@
                 if (cookieName && sMatch) return sMatch[1];
                 return false;
             },
-            isGeoCookie = readCookie('mycountry');
+            supports_local_storage = function() {
+                try {
+                    return 'localStorage' in window && window['localStorage'] !== null;
+                } catch(e){
+                    return false;
+                }
+            },
+            isGeoStored = supports_local_storage() === true ? localStorage.getItem('mycountry') : readCookie('mycountry');
 
-        if((isGeoCookie === false) || (isGeoCookie.length < 1)) { //if there isn't a cookie already set, find the location
+        if((isGeoStored === false) || (isGeoStored === null) || (isGeoStored.length < 1)) { //if there isn't anything set, find the location
             var geoRegion,
                 geoLat,
                 geoLong;
@@ -48,8 +55,8 @@
                                 if(!geoRegion) {
                                     return false;
                                 } else {
-                                    // set cookie
-                                    setCookie('mycountry',geoRegion,14);
+                                    // set country
+                                    supports_local_storage() === true ? localStorage.setItem('mycountry', geoRegion) : setCookie('mycountry', geoRegion, 14);
                                     if(callback) callback();
                                 }
                             } else {
@@ -86,14 +93,14 @@
                     if(!geoRegion) {
                         return false;
                     } else {
-                        // set cookie
-                        window.setCookie('mycountry',geoRegion,14);
+                        // set country
+                        supports_local_storage() === true ? localStorage.setItem('mycountry', geoRegion) : setCookie('mycountry', geoRegion, 14);
                         if(callback) callback();
                     }
                 }).fail(function() { alert('Error retrieving location from IP Address'); });
             }
         } else {
-            //if there is a cookie, don't do anything.
+            //if there is a stored country, don't do anything.
             if(callback) callback();
         }
     }
